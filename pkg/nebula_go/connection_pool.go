@@ -32,7 +32,11 @@ func NewConnectionPool(version string, addresses []HostAddress, conf PoolConfig,
 func NewSslConnectionPool(version string, addresses []HostAddress, conf PoolConfig, sslConfig *tls.Config, log Logger) (*ConnectionPool, error) {
 	driver, ok := drivers[version]
 	if !ok {
-		return nil, fmt.Errorf("cannot find the nebula version")
+		keys := make([]string, 0, len(drivers))
+		for i :=range drivers{
+			keys = append(keys, i)
+		}
+		return nil, fmt.Errorf("cannot find the nebula version, valid versions are %v", keys)
 	}
 	// Process domain to IP
 	convAddress, err := DomainToIP(addresses)
